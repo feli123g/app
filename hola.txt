@@ -1,0 +1,76 @@
+
+          ItemTask
+import 'package:flutter/material.dart';
+
+class ItemTask extends StatelessWidget {
+  final String title;
+  final String date;
+  final bool isOdd;
+  const ItemTask(
+      {Key? key, required this.title, required this.date, required this.isOdd})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Color? color = Theme.of(context).primaryColor;
+    TextStyle textStyle = const TextStyle(color: Colors.white);
+    if (!isOdd) {
+      color = Theme.of(context).primaryColorLight;
+      textStyle = const TextStyle(color: Colors.black);
+    }
+
+    return Card(
+      color: color,
+      child: ListTile(
+        leading: const Icon(Icons.check_circle), //calendar_today
+        title: Text(style: textStyle, title),
+        subtitle: Text(style: textStyle, date),
+      ),
+    );
+  }
+}
+
+
+list ItemTask
+
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/controller_task.dart';
+import 'package:flutter_application_1/custom_widget/item_task.dart';
+import 'package:get/get.dart';
+
+class ListTask extends StatelessWidget {
+  ListTask({super.key});
+  final ControllerTask c = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    bool isOdd = true;
+    return Expanded(
+        child: ListView.builder(
+            //padding: const EdgeInsets.all(4),
+            itemCount: c.listTask.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ItemTask(
+                  title: c.listTask[index].title,
+                  date: c.listTask[index].date,
+                  isOdd: isOdd);
+            }
+            //children: const [ItemTask()],
+            ));
+  }
+}
+
+
+
+
+controller_task
+
+
+import 'package:flutter_application_1/modelo/model_task.dart';
+import 'package:get/get.dart';
+
+class ControllerTask extends GetxController {
+  var listTask = <Task>[].obs;
+  var title = "".obs;
+  add(Task task) => listTask.add(task);
+}
