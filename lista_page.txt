@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/src/controller/controller_list.dart';
+import 'package:get/get.dart';
+
+class ListaPage extends StatelessWidget {
+  ListaPage({super.key});
+  final ControllerList ctr = Get.put(ControllerList());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Lista de productos'),
+      ),
+      body: Obx(() => ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: ctr.listaProducto.length,
+            itemBuilder: (BuildContext context, int index) {
+              var producto = ctr.listaProducto[index];
+              String availabilityText =
+                  producto.disponible ? "Disponible" : "No disponible";
+
+              Color tileColor = producto.disponible
+                  ? const Color.fromARGB(87, 255, 191, 0).withOpacity(0.1)
+                  : const Color.fromRGBO(255, 17, 0, 0.49).withOpacity(0.4);
+
+              return ListTile(
+                title: Text(producto.nombre),
+                subtitle: Text(availabilityText),
+                tileColor: tileColor,
+                trailing: producto.disponible
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : const Icon(Icons.close, color: Colors.red),
+                onTap: () {
+                  // Acción al hacer clic en el ListTile
+                },
+              );
+            },
+          )),
+    );
+  }
+}
